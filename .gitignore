@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+/checkpoints/
+/feature_cache/
+/csv/
+/data/
+/wandb/
+/logs/

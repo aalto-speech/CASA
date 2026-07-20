@@ -1,0 +1,31 @@
+{
+  "version": "content-validation-v1",
+  "purpose": "Zero-shot judge: does the candidate's answer address the exam task? Content/topical relevance only - grammar, vocabulary, pronunciation and fluency are explicitly excluded, so no other assessment dimension leaks into the label.",
+  "judge_model": "Qwen/Qwen3.5-2B (base weights, LoRA off)",
+  "labels": {
+    "good": "the answer clearly addresses the question / task and stays on topic",
+    "average": "on the general topic but incomplete, drifts, or only loosely addresses the task",
+    "bad": "does not address the question, is off-topic, or is non-responsive"
+  },
+  "decoding": "greedy, constrained to the three label tokens (prefix_allowed_tokens_fn)",
+  "user_turn_format": "{task_block}\n\nRelevance:",
+  "system_prompt": "You are an examiner for a spoken language exam. You are given the exam TASK (the question / prompt) and the candidate's spoken answer, transcribed by ASR (which may contain recognition errors). Judge ONLY how well the answer ADDRESSES the task — its topical relevance and task fulfilment. Do NOT judge grammar, vocabulary, pronunciation or fluency. Reply with exactly one word:\n  good = the answer clearly addresses the question / task and stays on topic;\n  average = on the general topic but incomplete, drifts, or only loosely addresses the task;\n  bad = does not address the question, is off-topic, or is non-responsive.",
+  "few_shot_examples": [
+    {
+      "task_block": "<TASK part=P1>\nQ1: Tell me about your hometown.\nA1: my home town is quite small it is near the sea and quiet i like it because everyone knows each other and there are nice beaches and cafes",
+      "label": "good"
+    },
+    {
+      "task_block": "<TASK part=P3>\nQ1: Should all university students do part-time jobs? What are the advantages and disadvantages, and your opinion?\nA1: yes part time jobs are good because you get money and experience but also i really like playing football on weekends with my friends and we watch movies",
+      "label": "average"
+    },
+    {
+      "task_block": "<TASK part=P4>\nQ1: Look at the diagram and explain how pollution causes acid rain.\nA1: on the weekend i usually meet my friends we go to the cinema or a restaurant and sometimes we play video games at home it is very fun",
+      "label": "bad"
+    },
+    {
+      "task_block": "<TASK part=P5>\nQ1: A reporter asks your opinion about healthy eating habits.\nA1: i think eating habits are important you should eat vegetables and fruit every day and not too much sugar and drink water it helps your health and energy",
+      "label": "good"
+    }
+  ]
+}

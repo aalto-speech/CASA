@@ -1,0 +1,17 @@
+# Core dependencies for the SANDI v5e scorer (Python 3.12).
+# Versions pinned to the environment used for the paper's results.
+# torch was installed with CUDA 12.8 wheels (torch==2.9.1+cu128); pick the build
+# matching your CUDA from https://pytorch.org/get-started/locally/
+torch==2.9.1
+transformers==5.8.1
+peft==0.19.1
+accelerate==1.12.0
+numpy==2.4.6
+pandas==2.2.3
+scipy==1.17.1
+soundfile==0.13.1
+safetensors==0.7.0
+scikit-learn==1.8.0
+tqdm==4.67.1
+# optional: experiment tracking (training falls back to --no_wandb if missing)
+wandb==0.27.2
