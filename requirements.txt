@@ -2,6 +2,9 @@
 # Versions pinned to the environment used for the paper's results.
 # torch was installed with CUDA 12.8 wheels (torch==2.9.1+cu128); pick the build
 # matching your CUDA from https://pytorch.org/get-started/locally/
+# NOTE: generate_asr.py also needs the ffmpeg system binary on PATH (to decode the FLAC
+# clips). It is not a pip package; environment.yml bundles it, otherwise install it via
+# conda (`conda install -c conda-forge ffmpeg`) or your OS package manager.
 torch==2.9.1
 transformers==5.8.1
 peft==0.19.1

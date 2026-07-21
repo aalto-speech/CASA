@@ -47,6 +47,11 @@ conda env create -f environment.yml && conda activate slaam   # exact export, or
 pip install -r requirements.txt                                # minimal pins (Python 3.12)
 ```
 
+The `pip` route also needs the **ffmpeg** system binary on `PATH` — `generate_asr.py`'s
+HuggingFace ASR pipeline uses it to decode the FLAC clips. It is not a pip package (so it is not
+in `requirements.txt`), but it *is* bundled in `environment.yml`; if you took the pip route,
+install it separately, e.g. `conda install -c conda-forge ffmpeg` (or your OS package manager).
+
 Optional environment variables:
 
 | var | meaning | default |

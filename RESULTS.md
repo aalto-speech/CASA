@@ -45,6 +45,8 @@ capturing nondeterministic GPU variation) and 5 runs at distinct seeds (2022/303
 
 The reported result follows our standard protocol: a single run per configuration, with the model configuration and checkpoint selected on the development set, never the test set. The headline CASA result (test RMSE 0.358) is that dev-selected run — not the best variability run overall (otherwise we would report 0.350 from the unstable 4e-4 configuration instead). The variability study above is a separate robustness check and does not feed the reported number.
 
+> **Note — ASR batch size.** The ASR transcripts also depend on batch size: regenerating them with `generate_asr.py --batch_size 32` instead of the original 16 alters a small fraction of clips (~4%), which slightly shifts the content-branch input and gives a test RMSE of 0.357 (vs 0.358).
+
 ## Per-run detail
 
 ### CASA
