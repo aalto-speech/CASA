@@ -25,6 +25,12 @@ All runs: seed 1011 unless stated, one 80 GB GPU (A100/H100), ~2 h for 2B.
 
 ## Architecture
 
+![CASA architecture](figure/CASA_architecture.png)
+
+*The editable source of this figure is [`figure/CASA-ICASSP.drawio`](figure/CASA-ICASSP.drawio) —
+open it with [draw.io / diagrams.net](https://app.diagrams.net) (or the VS Code "Draw.io
+Integration" extension) to edit or re-export it.*
+
 Each test part (audio + task prompt) is scored independently; speaker overall = mean of part scores.
 
 1. **Acoustic branch** — frozen `openai/whisper-medium` encoder with a LoRA adapter (r16),
@@ -190,6 +196,7 @@ scripts/                     # train_casa*.sh (main, 4b, crisper, wavlm, xlsr, x
                              #   lr4e4, aux0), evaluate.sh
 prompts/content_validation.json # zero-shot content-validation judge prompt (system + few-shot)
 examples/                    # synthetic samples of every CSV format in the pipeline
+figure/                      # architecture figure (PNG) + its editable draw.io source
 ```
 
 ## Notes for reproduction

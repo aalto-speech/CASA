@@ -24,6 +24,7 @@ so I didn't spend much time for it (for now).
 """
 
 import contextlib
+import os
 
 import torch
 import torch.nn.functional as F
@@ -60,7 +61,7 @@ class SSLAcousticEncoder(torch.nn.Module):
         use_task_emb: bool = True,
         use_answer_emb: bool = True,
         layer_sum: bool = False,       # SUPERB-style learnable weighted sum over ALL layers
-        cache_dir: str = "/scratch/elec/t412-slaam/hf_cache/hub",
+        cache_dir: str | None = os.environ.get("HF_CACHE_DIR") or None,
     ):
         super().__init__()
         # WavLM's gated relative-position attention has no sdpa path in some transformers builds;

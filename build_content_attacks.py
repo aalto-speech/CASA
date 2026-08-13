@@ -6,12 +6,15 @@ gold score; evaluate them by score change relative to the clean prediction.
 """
 
 import argparse
+import os
 from pathlib import Path
 
 import pandas as pd
 
 
-AUDIO_ROOT = "/scratch/elec/t405-puhe/c/sandi2025/data/flac"
+# Canonical SANDI audio root (override with the SANDI_AUDIO_ROOT environment variable);
+# raw CSV paths are rebuilt from the /flac/ marker onto this root.
+AUDIO_ROOT = os.environ.get("SANDI_AUDIO_ROOT", "data/sandi/flac")
 FLAC_MARKER = "/flac/"
 SWAP_PART = {1: 5, 5: 1, 3: 4, 4: 3}
 DEFAULT_UNRELATED_QUESTION = (
