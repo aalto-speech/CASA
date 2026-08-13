@@ -1,6 +1,6 @@
-"""Zero-shot content validation: does the answer address the question?
+"""Few-shot content validation: does the answer address the question?
 
-Uses CASA's LLM backbone (base Qwen3.5-2B, LoRA OFF) as a zero-shot judge. It sees only the exam
+Uses CASA's LLM backbone (base Qwen3.5-2B, LoRA OFF) as a few-shot judge. It sees only the exam
 TASK and the ASR answer and replies with one word (good / average / bad); it is explicitly told not
 to judge grammar, vocabulary, pronunciation or fluency, so no other assessment dimension leaks in.
 

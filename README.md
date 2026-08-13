@@ -163,7 +163,7 @@ bash scripts/train_casa_lr4e4.sh    # --whisper_lr 4e-4  (worse and less stable;
 bash scripts/train_casa_aux0.sh     # --aux_weight 0.0   (auxiliary loss disabled)
 ```
 
-**Zero-shot content validation.** Uses CASA's LLM backbone (base Qwen3.5-2B, LoRA off) to judge
+**Few-shot content validation.** Uses CASA's LLM backbone (base Qwen3.5-2B, LoRA off) to judge
 whether an answer addresses its question. `build_content_attacks.py` pairs every test answer with an
 unrelated question (about nuclear reactors), leaving the audio and answers untouched:
 
@@ -185,7 +185,7 @@ build_csvs.py                # official S&I corpus -> csv/{train,dev,test}.csv (
 generate_asr.py              # frozen-Whisper ASR transcription of the SANDI clips
 build_master.py              # raw SANDI CSVs -> master_{split}[_asr|_crisper].csv
 build_content_attacks.py     # builds the unrelated-question / cross-part attacked test masters
-content_validation.py        # zero-shot LLM judge: does the answer address the question?
+content_validation.py        # few-shot LLM judge: does the answer address the question?
 modeling/qwen_scorer.py      # QwenAcousticScorer: LLM+LoRA, soft tokens, aux head, tolerance-MSE
 modeling/whisper_acoustic.py # WhisperAcousticEncoder: Whisper+LoRA, RoPE aggregator, [CLS] pool
 modeling/ssl_acoustic.py     # SSLAcousticEncoder: raw-waveform wav2vec2/WavLM+LoRA, same (B,D) contract
@@ -194,7 +194,7 @@ data_loaders/collators.py    # batch collation
 utils/metrics.py             # speaker-level RMSE / macro-RMSE / PCC / CEFR-band metrics
 scripts/                     # train_casa*.sh (main, 4b, crisper, wavlm, xlsr, xlsr_en,
                              #   lr4e4, aux0), evaluate.sh
-prompts/content_validation.json # zero-shot content-validation judge prompt (system + few-shot)
+prompts/content_validation.json # few-shot content-validation judge prompt (system + demonstrations)
 examples/                    # synthetic samples of every CSV format in the pipeline
 figure/                      # architecture figure (PNG) + its editable draw.io source
 ```

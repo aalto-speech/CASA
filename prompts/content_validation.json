@@ -1,6 +1,6 @@
 {
   "version": "content-validation-v1",
-  "purpose": "Zero-shot judge: does the candidate's answer address the exam task? Content/topical relevance only - grammar, vocabulary, pronunciation and fluency are explicitly excluded, so no other assessment dimension leaks into the label.",
+  "purpose": "Few-shot judge: does the candidate's answer address the exam task? Content/topical relevance only - grammar, vocabulary, pronunciation and fluency are explicitly excluded, so no other assessment dimension leaks into the label.",
   "judge_model": "Qwen/Qwen3.5-2B (base weights, LoRA off)",
   "labels": {
     "good": "the answer clearly addresses the question / task and stays on topic",
