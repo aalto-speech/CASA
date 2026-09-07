@@ -2,7 +2,8 @@
 
 All numbers are on the held-out S&I **test** set (300 speakers, 1200 part-responses).
 `dev` is the dev-set overall RMSE used for checkpoint selection; `aux` is the acoustic-only
-auxiliary head (no text channel). %≤0.5 / %≤1.0 are the fractions of speakers whose predicted
+auxiliary head (no text channel). PCC / SRC are the speaker-level Pearson / Spearman correlations
+between predicted and gold overall score. %≤0.5 / %≤1.0 are the fractions of speakers whose predicted
 overall score falls within 0.5 / 1.0 of the gold score.
 
 This file reports the configurations discussed in the paper.
@@ -13,11 +14,11 @@ This file reports the configurations discussed in the paper.
 
 ## Released model variants
 
-| Model | Acoustic encoder | LLM scorer | dev (overall / macro) ↓ | test (overall / macro) ↓ | PCC ↑ | %≤0.5 ↑ | %≤1.0 ↑ |
-|---|---|---|---|---|---|---|---|
-| **CASA** | whisper-medium | Qwen3.5-2B | **0.3607** / 0.4403 | **0.3579** / 0.4371 | 0.829 | **84.7** | 98.7 |
-| CASA-4B | whisper-medium | Qwen3.5-4B | 0.3645 / 0.4472 | 0.3641 / 0.4447 | 0.823 | 83.3 | **99.7** |
-| CASA-Crisper | CrisperWhisper (verbatim) | Qwen3.5-2B | 0.3654 / 0.4430 | 0.3628 / 0.4399 | **0.836** | 84.0 | **99.7** |
+| Model | Acoustic encoder | LLM scorer | dev (overall / macro) ↓ | test (overall / macro) ↓ | PCC ↑ | SRC ↑ | %≤0.5 ↑ | %≤1.0 ↑ |
+|---|---|---|---|---|---|---|---|---|
+| **CASA** | whisper-medium | Qwen3.5-2B | **0.3607** / 0.4403 | **0.3579** / 0.4371 | 0.829 | 0.828 | **84.7** | 98.7 |
+| CASA-4B | whisper-medium | Qwen3.5-4B | 0.3645 / 0.4472 | 0.3641 / 0.4447 | 0.823 | 0.821 | 83.3 | **99.7** |
+| CASA-Crisper | CrisperWhisper (verbatim) | Qwen3.5-2B | 0.3654 / 0.4430 | 0.3628 / 0.4399 | **0.836** | **0.839** | 84.0 | **99.7** |
 
 ## Acoustic-encoder ablation
 
@@ -25,12 +26,12 @@ Only the acoustic encoder is swapped; the ASR transcript stays whisper-medium an
 Qwen3.5-2B, so the acoustic representation is the sole difference from CASA. All three are
 self-supervised (SSL) encoders; XLSR-53-en is additionally fine-tuned for English ASR.
 
-| Acoustic encoder | dev (overall / macro) ↓ | test (overall / macro) ↓ | PCC ↑ | %≤0.5 ↑ | %≤1.0 ↑ | aux-only ↓ |
-|---|---|---|---|---|---|---|
-| **whisper-medium (CASA)** | **0.3607** / 0.4403 | **0.3579** / 0.4371 | **0.829** | **84.7** | 98.7 | **0.392** |
-| WavLM-large | 0.3851 / 0.4484 | 0.3905 / 0.4561 | 0.798 | 79.0 | **99.3** | 0.515 |
-| XLS-R-300M (multilingual) | 0.3838 / 0.4711 | 0.4046 / 0.5018 | 0.776 | 78.7 | 98.7 | 0.635 |
-| XLSR-53 English-ASR-tuned | 0.3861 / 0.4882 | 0.4013 / 0.5199 | 0.808 | 81.3 | 99.0 | 0.531 |
+| Acoustic encoder | dev (overall / macro) ↓ | test (overall / macro) ↓ | PCC ↑ | SRC ↑ | %≤0.5 ↑ | %≤1.0 ↑ | aux-only ↓ |
+|---|---|---|---|---|---|---|---|
+| **whisper-medium (CASA)** | **0.3607** / 0.4403 | **0.3579** / 0.4371 | **0.829** | **0.828** | **84.7** | 98.7 | **0.392** |
+| WavLM-large | 0.3851 / 0.4484 | 0.3905 / 0.4561 | 0.798 | 0.799 | 79.0 | **99.3** | 0.515 |
+| XLS-R-300M (multilingual) | 0.3838 / 0.4711 | 0.4046 / 0.5018 | 0.776 | 0.777 | 78.7 | 98.7 | 0.635 |
+| XLSR-53 English-ASR-tuned | 0.3861 / 0.4882 | 0.4013 / 0.5199 | 0.808 | 0.811 | 81.3 | 99.0 | 0.531 |
 
 ## Run-to-run variability (3 configurations × 10 runs)
 

@@ -7,16 +7,17 @@ single forward pass.
 
 Overall performance on the S&I test set (300 speakers). CASA-Crisper uses CrisperWhisper:
 
-| Model | RMSE | PCC | %≤0.5 | %≤1.0 |
-|---|---|---|---|---|
-| NTNU (Lin et al.) | 0.360 | 0.827 | **85.7** | 99.0 |
-| Perezoso (Cai et al.) | 0.364 | 0.826 | 83.0 | **99.7** |
-| **CASA** | **0.358** | 0.829 | 84.7 | 98.7 |
-| CASA-Crisper | 0.363 | **0.836** | 84.0 | **99.7** |
+| Model | RMSE | PCC | SRC | %≤0.5 | %≤1.0 |
+|---|---|---|---|---|---|
+| NTNU (Lin et al.) | 0.360 | 0.827 | – | **85.7** | 99.0 |
+| Perezoso (Cai et al.) | 0.364 | 0.826 | – | 83.0 | **99.7** |
+| **CASA** | **0.358** | 0.829 | 0.828 | 84.7 | 98.7 |
+| CASA-Crisper | 0.363 | **0.836** | **0.839** | 84.0 | **99.7** |
 
-RMSE is speaker-level on the SANDI overall score (0–6 scale, 2=A2 … 5=C1). The reported CASA
-checkpoint is selected by dev RMSE. Released configurations: **CASA** (main, Qwen3.5-2B),
-**CASA-4B** (Qwen3.5-4B) and **CASA-Crisper** (CrisperWhisper).
+RMSE is speaker-level on the SANDI overall score (0–6 scale, 2=A2 … 5=C1); PCC and SRC are the
+speaker-level Pearson and Spearman correlations (SRC shown as `–` where the original paper does not
+report it). The reported CASA checkpoint is selected by dev RMSE. Released configurations:
+**CASA** (main, Qwen3.5-2B), **CASA-4B** (Qwen3.5-4B) and **CASA-Crisper** (CrisperWhisper).
 
 > **Full run-level results are in [`RESULTS.md`](RESULTS.md)** — per-CEFR-band and per-part RMSE,
 > the auxiliary-head scores, and a 5-configuration × 10-run variability study (50 runs).
