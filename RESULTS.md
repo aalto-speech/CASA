@@ -8,9 +8,9 @@ overall score falls within 0.5 / 1.0 of the gold score.
 
 This file reports the configurations discussed in the paper.
 
-> **Note on the `aux` column:** in the `aux-0` configuration the auxiliary head receives no training
-> signal (its loss weight is 0), so it stays at its random initialisation and its `aux` values are
-> not meaningful — they are reported only for completeness.
+> **Note on the `aux` column:** in the `no-aux` and `aux-0` configurations the auxiliary head
+> receives no training signal (its loss weight is 0), so it stays at its random initialisation and
+> its `aux` values are not meaningful — they are reported only for completeness.
 
 ## Released model variants
 
@@ -38,11 +38,21 @@ self-supervised (SSL) encoders; XLSR-53-en is additionally fine-tuned for Englis
 For investigating the variability, we train each configuration 9 additional runs beyond the base configuration (10 total): 5 runs at seed 1011 (a base run plus 4 repetitions,
 capturing nondeterministic GPU variation) and 5 runs at distinct seeds (2022/3033/4044/5055/6066). 
 
+Test overall RMSE across the 10 runs of each configuration:
+
 | Config | n | Mean ↓ | Median ↓ | Min–Max  | 95% CI  | sd |
 |---|---|---|---|---|---|---|
-| **CASA** | 10 | **0.363** | **0.362** | 0.357–0.377 | 0.359–0.367 | 0.006 |
+| **CASA** | 10 | **0.363** | **0.362** | 0.357–0.377 | 0.359–0.367 | **0.006** |
 | 4e-4 (doubled encoder LR) | 10 | 0.378 | 0.376 | 0.350–0.402 | 0.364–0.392 | 0.019 |
-| aux-0 (auxiliary weight 0) | 10 | 0.367 | 0.366 | 0.362–0.376 | 0.364–0.370 | 0.005 |
+| no-aux (auxiliary branch removed) | 10 | 0.371 | 0.369 | 0.357–0.403 | 0.362–0.380 | 0.012 |
+
+And the same for the macro (per-CEFR-band mean) RMSE:
+
+| Config | n | Mean ↓ | Median ↓ | Min–Max  | 95% CI  | sd |
+|---|---|---|---|---|---|---|
+| **CASA** | 10 | **0.446** | **0.443** | 0.435–0.481 | 0.436–0.455 | **0.013** |
+| 4e-4 (doubled encoder LR) | 10 | 0.469 | 0.463 | 0.429–0.500 | 0.449–0.488 | 0.028 |
+| no-aux (auxiliary branch removed) | 10 | 0.459 | 0.452 | 0.436–0.503 | 0.445–0.473 | 0.020 |
 
 The reported result follows our standard protocol: a single run per configuration, with the model configuration and checkpoint selected on the development set, never the test set. The headline CASA result (test RMSE 0.358) is that dev-selected run — not the best variability run overall (otherwise we would report 0.350 from the unstable 4e-4 configuration instead). The variability study above is a separate robustness check and does not feed the reported number.
 
@@ -80,7 +90,30 @@ The reported result follows our standard protocol: a single run per configuratio
 | 4e-4-s5 | 5055 | 0.372 | 0.363 | 0.431 | 0.472 | 0.456 | 0.492 | 0.454 | 0.603 | 0.363 | **0.274** | 0.557 | 0.449 |
 | 4e-4-s6 | 6066 | 0.379 | 0.394 | 0.535 | 0.517 | 0.493 | 0.529 | 0.487 | 0.609 | 0.361 | 0.332 | 0.683 | 0.496 |
 
-### aux-0 (auxiliary weight 0)
+### no-aux (auxiliary branch removed)
+
+Auxiliary loss off **and** the head's CEFR estimate no longer injected into the prompt
+(`scripts/train_casa_no_aux.sh`), so the acoustic encoder is trained through the soft-token path
+only.
+
+| Run | Seed | dev ↓ | test ↓ | aux ↓ | P1 ↓ | P3 ↓ | P4 ↓ | P5 ↓ | A2 ↓ | B1 ↓ | B2 ↓ | C1 ↓ | macro ↓ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| no-aux | 1011 | **0.366** | 0.373 | 3.355 | 0.480 | 0.475 | 0.503 | 0.460 | 0.550 | **0.310** | 0.335 | 0.701 | 0.474 |
+| no-aux-r2 | 1011 | 0.379 | 0.370 | 3.496 | 0.477 | 0.467 | 0.494 | 0.456 | 0.557 | 0.365 | 0.302 | 0.566 | 0.448 |
+| no-aux-r3 | 1011 | 0.370 | 0.370 | 3.740 | 0.483 | 0.472 | 0.500 | 0.446 | 0.568 | 0.353 | 0.315 | 0.571 | 0.452 |
+| no-aux-r4 | 1011 | 0.372 | 0.363 | 4.190 | **0.471** | 0.472 | 0.493 | **0.445** | **0.549** | 0.360 | 0.291 | 0.565 | 0.441 |
+| no-aux-r5 | 1011 | 0.370 | 0.368 | 3.316 | 0.481 | 0.471 | 0.498 | 0.448 | 0.579 | 0.357 | 0.301 | 0.572 | 0.452 |
+| no-aux-s2 | 2022 | 0.369 | 0.376 | 4.124 | 0.482 | 0.459 | 0.500 | 0.455 | 0.564 | 0.312 | 0.346 | 0.669 | 0.473 |
+| no-aux-s3 | 3033 | 0.398 | 0.403 | 4.231 | 0.530 | 0.520 | 0.547 | 0.500 | 0.659 | 0.388 | 0.320 | 0.643 | 0.503 |
+| no-aux-s4 | 4044 | 0.371 | 0.365 | 3.356 | 0.471 | **0.455** | 0.492 | 0.448 | 0.591 | 0.351 | 0.296 | 0.566 | 0.451 |
+| no-aux-s5 | 5055 | 0.372 | **0.357** | **3.212** | 0.473 | 0.459 | **0.490** | 0.453 | 0.555 | 0.351 | 0.290 | **0.549** | **0.436** |
+| no-aux-s6 | 6066 | 0.373 | 0.367 | 4.341 | 0.474 | 0.463 | 0.502 | 0.452 | 0.604 | 0.354 | **0.288** | 0.595 | 0.460 |
+
+### aux-0 (auxiliary loss off, estimate still injected) — not in the paper
+
+`--aux_weight 0` switches off the auxiliary *loss*, but the head still injects its (now untrained)
+CEFR estimate into the prompt, so this is not a clean removal of the auxiliary branch — `no-aux`
+above is. Mean test RMSE over the 10 runs is 0.367 (sd 0.005).
 
 | Run | Seed | dev ↓ | test ↓ | aux ↓ | P1 ↓ | P3 ↓ | P4 ↓ | P5 ↓ | A2 ↓ | B1 ↓ | B2 ↓ | C1 ↓ | macro ↓ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|

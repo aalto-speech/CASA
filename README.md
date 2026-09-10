@@ -159,9 +159,10 @@ GPU kernels) and 5 runs at seeds 2022/3033/4044/5055/6066. Only `--seed` changes
 for SEED in 1011 1011 1011 1011 1011 2022 3033 4044 5055 6066; do
   bash scripts/train_casa.sh        # edit --seed / --output_dir per run, or pass them through
 done
-# the two comparison configurations differ from CASA by a single flag:
+# the two comparison configurations reported in the paper:
 bash scripts/train_casa_lr4e4.sh    # --whisper_lr 4e-4  (worse and less stable; not recommended)
-bash scripts/train_casa_aux0.sh     # --aux_weight 0.0   (auxiliary loss disabled)
+bash scripts/train_casa_no_aux.sh
+# scripts/train_casa_aux0.sh switches off only the auxiliary loss; not in the paper.
 ```
 
 **Few-shot content validation.** Uses CASA's LLM backbone (base Qwen3.5-2B, LoRA off) to judge
@@ -194,7 +195,7 @@ data_loaders/sandi_dataset.py# dataset + the full scoring prompt (DEFAULT_RUBRIC
 data_loaders/collators.py    # batch collation
 utils/metrics.py             # speaker-level RMSE / macro-RMSE / PCC / CEFR-band metrics
 scripts/                     # train_casa*.sh (main, 4b, crisper, wavlm, xlsr, xlsr_en,
-                             #   lr4e4, aux0), evaluate.sh
+                             #   lr4e4, no_aux, aux0), evaluate.sh
 prompts/content_validation.json # few-shot content-validation judge prompt (system + demonstrations)
 examples/                    # synthetic samples of every CSV format in the pipeline
 figure/                      # architecture figure (PNG) + its editable draw.io source

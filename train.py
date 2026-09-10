@@ -169,6 +169,10 @@ def parse_args():
                     help="weight for acoustic-only aux loss; 0 = monitor aux RMSE without training it")
     ap.add_argument("--aux_tolerance", type=float, default=1.0,
                     help="zero auxiliary loss within target +/- tolerance; 0 = ordinary MSE")
+    ap.add_argument("--no_aux_score_token", action="store_true",
+                    help="disable injecting the Whisper-LoRA CEFR estimate as a text line in the "
+                         "prompt; combine with --aux_weight 0 for the no-aux arm (auxiliary branch "
+                         "fully removed: no loss AND no injected estimate)")
     ap.add_argument("--eval_only", default="",
                     help="skip training; load model.safetensors from this checkpoint dir and just "
                          "run predict on dev+test (for inference ablations)")
@@ -251,6 +255,7 @@ def main():
         aux_weight=args.aux_weight,
         main_weight=1.0,
         aux_tolerance=args.aux_tolerance,
+        inject_aux_score=not args.no_aux_score_token,
         acoustic_projector_dropout=args.acoustic_projector_dropout,
         attn_impl=args.attn_impl,
         qwen_lora_r=args.qwen_lora_r, qwen_lora_alpha=args.qwen_lora_alpha,
